@@ -1,10 +1,5 @@
 .DS_Store
 node_modules
-/public/img/ignore/
-/public/3dtiles/
-/public/cesium/
-/public/data/
-/public/glb/
 /dist
 .VSCodeCounter/
 
