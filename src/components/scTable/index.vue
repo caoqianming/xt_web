@@ -35,7 +35,7 @@
     </div>
     <div class="scTable-page" v-if="!hidePagination || !hideDo">
       <div class="scTable-pagination">
-        <el-pagination v-if="!hidePagination" background :small="true" :layout="paginationLayout" :total="total"
+        <el-pagination v-if="!hidePagination" background size="small" :layout="paginationLayout" :total="total"
           :page-size="scPageSize" :page-sizes="pageSizes" v-model:currentPage="currentPage"
           @current-change="paginationChange" @update:page-size="pageSizeChange"></el-pagination>
       </div>
