@@ -6,7 +6,7 @@ const routes = [
 		name: "layout",
 		path: "/",
 		component: () => import(/* webpackChunkName: "layout" */ '@/layout'),
-		redirect: config.DASHBOARD_URL || '/dashboard',
+		redirect: config.DASHBOARD_URL || getBaseDashboard(),
 		children: []
 	},
 	{
@@ -31,5 +31,11 @@ const routes = [
 		}
 	}
 ]
-
+function getBaseDashboard() {
+	let base_dashboard = this.$TOOL.data.get('BASE_INFO').base.base_dashboard;
+	if (base_dashboard == null || base_dashboard == undefined) {
+		base_dashboard = '/dashboard'
+	}
+	return base_dashboard
+}
 export default routes;
