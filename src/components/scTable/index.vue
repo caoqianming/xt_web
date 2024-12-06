@@ -210,7 +210,10 @@ export default {
         // delete reqData[config.request.page]
         // delete reqData[config.request.pageSize]
       }
-      var c = Object.assign({}, this.tableParams, reqData)
+      if (this.query[this.orderStr]){
+        reqData[this.orderStr] = this.query[this.orderStr]
+      }
+      var c = Object.assign({}, this.query, this.tableParams, reqData)
       try {
         if (this.apiObj) {
           var res = await this.apiObj.req(c);
