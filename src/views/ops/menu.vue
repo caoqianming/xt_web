@@ -20,7 +20,7 @@
           </template>
         </el-table-column>
         <el-table-column label="路由名" prop="route_name" width="100"></el-table-column>
-        <el-table-column label="图标" prop="icon" width="80"></el-table-column>
+        <el-table-column label="图标" prop="icon" width="150"></el-table-column>
         <el-table-column label="组件" prop="component" width="150" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="是否隐藏" width="80">
           <template #default="scope">
