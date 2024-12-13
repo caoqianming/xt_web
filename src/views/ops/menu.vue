@@ -5,45 +5,37 @@
         <el-button type="primary" icon="el-icon-plus" @click="addMenu"></el-button>
       </div>
       <div class="right-panel">
-        <el-input
-          v-model="query.search"
-          placeholder="名称/权限标识"
-          clearable
-          @keyup.enter="handleQuery"
-        ></el-input>
-        <el-button
-          type="primary"
-          icon="el-icon-search"
-          @click="handleQuery"
-        ></el-button>
+        <el-input v-model="query.search" placeholder="名称/权限标识" clearable @keyup.enter="handleQuery"></el-input>
+        <el-button type="primary" icon="el-icon-search" @click="handleQuery"></el-button>
       </div>
     </el-header>
     <el-main class="nopadding">
       <scTable ref="table" :isTree="true" :apiObj="apiObj" :params="params" :query="query" row-key="id"
         @selection-change="selectionChange" hidePagination @dataChange="updateOptions">
-        <!-- <el-table-column type="selection" width="50"></el-table-column> -->
         <el-table-column label="#" type="index" width="50"></el-table-column>
-        <el-table-column label="菜单名称" prop="name" min-width="200"></el-table-column>
-        <el-table-column label="类型" prop="type" min-width="200">
+        <el-table-column label="功能名" prop="name" width="200"></el-table-column>
+        <el-table-column label="类型" prop="type" width="80">
           <template #default="scope">
             <span>{{ types[scope.row.type] }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="标识" prop="codes" min-width="200" :show-overflow-tooltip="true">
+        <el-table-column label="路由名" prop="route_name" width="100"></el-table-column>
+        <el-table-column label="图标" prop="icon" width="80"></el-table-column>
+        <el-table-column label="组件" prop="component" width="150" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="权限标识" prop="codes" min-width="100" :show-overflow-tooltip="true">
           <template #default="scope">
             <el-tag v-for="i in scope.row.codes" v-bind:key="i">{{ i }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="排序" prop="sort" min-width="200"></el-table-column>
+        <el-table-column label="排序" prop="sort" width="80"></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="200">
           <template #default="scope">
             <el-button type="primary" size="small" @click="editMenu(scope.row, scope.$index)">编辑</el-button>
-            <el-button type="danger" size="small" @click="delMenu(scope.row.id)">删除</el-button>
-            <!--<el-popconfirm title="确定删除吗？" @confirm="delMenu(scope.row, scope.$index)">
-							<template #reference>
-								<el-button link size="small">删除</el-button>
-							</template>
-  </el-popconfirm>-->
+            <el-popconfirm title="确定删除吗？" @confirm="delMenu(scope.row, scope.$index)">
+              <template #reference>
+                <el-button type="danger" size="small">删除</el-button>
+              </template>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </scTable>
@@ -58,11 +50,32 @@
           <el-radio :value="30">接口</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="名称" prop="name">
+      <el-form-item label="功能名" prop="name">
         <el-input v-model="addForm.name" clearable></el-input>
       </el-form-item>
-      <el-form-item label="标识">
-        <!-- <el-input v-model="codes" clearable style="width: 90%;"></el-input> -->
+      <span v-show="addForm.type != 30">
+        <el-form-item label="路由名" prop="route_name">
+          <el-input v-model="addForm.route_name" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="图标" prop="icon">
+          <el-input v-model="addForm.icon" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="路由地址" prop="path">
+          <el-input v-model="addForm.path" clearable></el-input>
+        </el-form-item>
+        <span v-show="addForm.type == 20">
+          <el-form-item label="组件地址" prop="component">
+            <el-input v-model="addForm.component" clearable></el-input>
+          </el-form-item>
+        </span>
+        <el-form-item label="是否隐藏" prop="is_hidden">
+          <el-switch v-model="addForm.is_hidden"></el-switch>
+        </el-form-item>
+        <el-form-item label="是否全屏" prop="is_fullpage">
+          <el-switch v-model="addForm.is_fullpage"></el-switch>
+        </el-form-item>
+      </span>
+      <el-form-item label="权限标识">
         <el-select v-model="addForm.codes" multiple filterable allow-create default-first-option
           :reserve-keyword="false" placeholder="权限标识(回车添加多个)" style="width: 100%">
           <el-option v-for="item in permCodes" :key="item" :label="item" :value="item" />
@@ -87,10 +100,12 @@
 <script>
 import { genTree } from "@/utils/verificate";
 const dForm = {
-        codes: [],
-        type: 10,
-        sort: 1,
-      };
+  codes: [],
+  type: 10,
+  sort: 1,
+  is_hidden: false,
+  is_fullpage: false,
+};
 export default {
   name: "dept",
   data() {
