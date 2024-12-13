@@ -22,6 +22,16 @@
         <el-table-column label="路由名" prop="route_name" width="100"></el-table-column>
         <el-table-column label="图标" prop="icon" width="80"></el-table-column>
         <el-table-column label="组件" prop="component" width="150" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="是否隐藏" width="80">
+          <template #default="scope">
+            <span v-show="scope.row.is_hidden">是</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="是否全屏" width="80">
+          <template #default="scope">
+            <span v-show="scope.row.is_fullpage">是</span>
+          </template>
+        </el-table-column>
         <el-table-column label="权限标识" prop="codes" min-width="100" :show-overflow-tooltip="true">
           <template #default="scope">
             <el-tag v-for="i in scope.row.codes" v-bind:key="i">{{ i }}</el-tag>
@@ -67,13 +77,14 @@
           <el-form-item label="组件地址" prop="component">
             <el-input v-model="addForm.component" clearable></el-input>
           </el-form-item>
+
+          <el-form-item label="是否隐藏" prop="is_hidden">
+            <el-switch v-model="addForm.is_hidden"></el-switch>
+          </el-form-item>
+          <el-form-item label="是否全屏" prop="is_fullpage">
+            <el-switch v-model="addForm.is_fullpage"></el-switch>
+          </el-form-item>
         </span>
-        <el-form-item label="是否隐藏" prop="is_hidden">
-          <el-switch v-model="addForm.is_hidden"></el-switch>
-        </el-form-item>
-        <el-form-item label="是否全屏" prop="is_fullpage">
-          <el-switch v-model="addForm.is_fullpage"></el-switch>
-        </el-form-item>
       </span>
       <el-form-item label="权限标识">
         <el-select v-model="addForm.codes" multiple filterable allow-create default-first-option
