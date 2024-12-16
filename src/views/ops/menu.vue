@@ -21,7 +21,8 @@
         </el-table-column>
         <el-table-column label="路由名" prop="route_name" width="100"></el-table-column>
         <el-table-column label="图标" prop="icon" width="150"></el-table-column>
-        <el-table-column label="组件" prop="component" width="150" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="路由地址" prop="path" width="200" :show-overflow-tooltip="true"></el-table-column>
+        <el-table-column label="组件" prop="component" width="200" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="是否隐藏" width="80">
           <template #default="scope">
             <span v-show="scope.row.is_hidden">是</span>
@@ -190,13 +191,13 @@ export default {
     },
 
     //删除
-    delMenu(id) {
+    delMenu(row) {
       this.$confirm(`确定删除吗？`, "提示", {
         type: "warning",
         confirmButtonText: "删除",
         confirmButtonClass: "el-button--danger",
       }).then(() => {
-        this.$API.system.permission.delete.req(id).then((res) => {
+        this.$API.system.permission.delete.req(row.id).then((res) => {
           this.$refs.table.refresh();
         });
       });
