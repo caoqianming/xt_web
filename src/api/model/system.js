@@ -241,7 +241,14 @@ export default {
 			req: async function( id){
 				return await http.post(`${config.API_URL}/system/user/${id}/reset_password/`);
 			}
-		}
+		},
+		routers: {
+			url: `${config.API_URL}/system/user/route/`,
+			name: "菜单列表",
+			req: async function(params){
+				return await http.get(this.url, params);
+			}
+		},
 	},
 	post: {
 		list: {
