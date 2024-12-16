@@ -118,9 +118,20 @@ export default {
           if (base_dashboard == null || base_dashboard == undefined || base_dashboard == '') {
             base_dashboard = '/dashboard'
           }
-          this.$router.replace({
-            path: base_dashboard,
-          });
+          if(this.$TOOL.data.get('BASE_INFO').base.base_menucate=='dynamic'){
+            try{
+              var res = await that.$API.system.user.routers.req({})
+              this.$TOOL.data.set("MENU",res)
+              console.log(res)
+            } catch (err) {
+            }
+          }
+   
+            that.$router.replace({
+              path: base_dashboard,
+            });
+          
+          
         } catch (err) {
           that.islogin = false;
         }

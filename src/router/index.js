@@ -61,20 +61,32 @@ router.beforeEach(async (to, from, next) => {
 	}
 	//加载动态/静态路由
 	if (!isGetRouter) {
-		let permissions = tool.data.get("PERMISSIONS") || [];//账号页面权限
-		let userMenu = userRoutes;//静态路由
-		userMenu = treeFilter(userRoutes, node => {
-			return node.meta.perms ? node.meta.perms.filter(item => permissions.indexOf(item) > -1).length > 0 : true
-		});
-		var menuRouter = filterAsyncRouter(userMenu);
-		menuRouter = flatAsyncRoutes(menuRouter);
-		menuRouter.forEach(item => {
-			router.addRoute("layout", item)
-		});
-		if (to.matched.length == 0) {
-			router.push(to.fullPath);
+		let userMenu = [];
+		if(tool.data.get('BASE_INFO').base.base_menucate=='dynamic'){
+			userMenu = tool.data.get("MENU") || [];	
+		}else{
+			let permissions = tool.data.get("PERMISSIONS") || [];//账号页面权限
+			// console.log("permissions",permissions);
+			userMenu = userRoutes;//静态路由
+			userMenu = treeFilter(userRoutes, node => {
+				return node.meta.perms ? node.meta.perms.filter(item => permissions.indexOf(item) > -1).length > 0 : true
+			});
 		}
-		isGetRouter = true;
+		try {
+			var menuRouter = filterAsyncRouter(userMenu);
+			menuRouter = flatAsyncRoutes(menuRouter);
+			menuRouter.forEach(item => {
+				router.addRoute("layout", item)
+			});
+			routes_404_r = router.addRoute(routes_404);
+			if (to.matched.length == 0) {
+				router.push(to.fullPath);
+			}
+			isGetRouter = true;
+		}catch (e) {
+		    
+		}
+		
 	}
 	beforeEach(to, from)
 	next();
@@ -95,14 +107,17 @@ router.onError((error) => {
 
 //入侵追加自定义方法、对象
 router.sc_getMenu = () => {
-	// var apiMenu = tool.data.get("MENU") || []
-	let permissions = tool.data.get("PERMISSIONS") || [];
-	let userMenu = userRoutes;
-	userMenu = treeFilter(userRoutes, node => {
-		return node.meta.perms ? node.meta.perms.filter(item => permissions.indexOf(item) > -1).length > 0 : true
-	});
-	let menus = checkRoute(userMenu, permissions)
-	return menus
+	if(tool.data.get('BASE_INFO').base.base_menucate=='dynamic'){
+		return tool.data.get("MENU") || []
+	}
+	else{
+		let permissions = tool.data.get("PERMISSIONS") || [];
+		let userMenu = treeFilter(userRoutes, node => {
+			return node.meta.perms ? node.meta.perms.filter(item => permissions.indexOf(item) > -1).length > 0 : true
+		});
+		userMenu = checkRoute(userMenu, permissions)
+		return userMenu
+	}
 }
 
 //转换
@@ -118,8 +133,8 @@ function filterAsyncRouter(routerMap) {
 		//MAP转路由对象
 		var route = {
 			path: item.path,
-			name: item.name,
-			meta: item.meta,
+			name: item.name?item.name:'',
+			meta: item.meta?item.meta:{},
 			redirect: item.redirect,
 			children: item.children ? filterAsyncRouter(item.children) : null,
 			component: loadComponent(item.component)
