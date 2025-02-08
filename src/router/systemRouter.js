@@ -17,6 +17,11 @@ const routes = [
 		}
 	},
 	{
+		path: "/:pathMatch(.*)*",
+		hidden: true,
+		component: () => import(/* webpackChunkName: "404" */ '@/layout/other/404'),
+	},
+	{
 		path: "/user_register",
 		component: () => import(/* webpackChunkName: "userRegister" */ '@/views/login/userRegister'),
 		meta: {
