@@ -26,7 +26,7 @@ module.exports = defineConfig({
 		},
 		client: {
 			  overlay: {
-				// runtimeErrors: false,
+				runtimeErrors: false,
 			},
 		},
 	},

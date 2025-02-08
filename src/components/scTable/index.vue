@@ -92,6 +92,7 @@ export default {
     tableName: { type: String, default: "" },
     apiObj: { type: Object, default: () => { } },
     params: { type: Object, default: () => ({}) },
+    query: { type: Object, default: () => ({}) },
     data: { type: Object, default: () => { } },
     height: { type: [String, Number], default: "100%" },
     size: { type: String, default: "default" },

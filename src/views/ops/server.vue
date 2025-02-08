@@ -3,7 +3,7 @@
     <el-main>
       <el-row :gutter="4">
         <el-col :md="5" :sm="24">
-          <el-card header="CPU" v-loading="loading">
+          <el-card header="CPU">
             <el-descriptions :column="1" border>
               <el-descriptions-item label="物理核心数">{{
         cpuData.count
@@ -16,7 +16,7 @@
           </el-card>
         </el-col>
         <el-col :md="5" :sm="24">
-          <el-card header="内存" v-loading="loading">
+          <el-card header="内存">
             <el-descriptions :column="1" border>
               <el-descriptions-item label="总内存">{{ memoryData.total }}GB</el-descriptions-item>
               <el-descriptions-item label="已用内存">{{ memoryData.used }}GB</el-descriptions-item>
@@ -25,7 +25,7 @@
           </el-card>
         </el-col>
         <el-col :md="5" :sm="24">
-          <el-card header="硬盘" v-loading="loading">
+          <el-card header="硬盘">
             <el-descriptions :column="1" border>
               <el-descriptions-item label="总大小">{{ diskData.total }}GB</el-descriptions-item>
               <el-descriptions-item label="已用大小">{{ diskData.used }}GB</el-descriptions-item>
@@ -34,7 +34,7 @@
           </el-card>
         </el-col>
         <el-col :md="9" :sm="24">
-          <el-card header="Celery&Redis" v-loading="loading">
+          <el-card header="Celery&Redis">
             <el-descriptions :column="2" border>
               <el-descriptions-item label="注册任务数">{{ celeryData.count_registered_task }}</el-descriptions-item>
               <el-descriptions-item label="Redis内存使用">{{ redisData.used_memory_human }}</el-descriptions-item>
@@ -69,7 +69,6 @@
 export default {
   data() {
     return {
-      loading: false,
       cpuData: {},
       diskData: {},
       memoryData: {},
@@ -96,18 +95,9 @@ export default {
       })
     },
     serverInfo() {
-      this.loading = true;
-      this.$API.ops.server.info
-        .req()
-        .then((res) => {
-          this.loading = false;
-          this.cpuData = res.cpu;
-          this.diskData = res.disk;
-          this.memoryData = res.memory;
-        })
-        .catch((e) => {
-          this.loading = false;
-        });
+      this.$API.ops.server.cpu.req().then(res=>{this.cpuData = res})
+      this.$API.ops.server.memory.req().then(res=>{this.memoryData = res})
+      this.$API.ops.server.disk.req().then(res=>{this.diskData = res})
     },
     resetQuery() {
       this.query = {};
