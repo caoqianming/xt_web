@@ -3,6 +3,7 @@
 </template>
 
 <script>
+	import { markRaw } from 'vue';
 	import * as echarts from 'echarts';
 	import T from './echarts-theme-T.js';
 	echarts.registerTheme('T', T);
@@ -27,7 +28,15 @@
 			option: {
 				deep:true,
 				handler (v) {
-					unwarp(this.myChart).setOption(v);
+					let that = this;
+					if(that.myChart!==null){
+						that.myChart.setOption(v);
+					}else{
+						let myChart = markRaw(echarts.init(that.$refs.scEcharts, 'T'));
+						myChart.setOption(v);
+						that.myChart = myChart;
+					}
+					// unwarp(this.myChart).setOption(v);
 				}
 			}
 		},
@@ -54,7 +63,7 @@
 		},
 		methods: {
 			draw(){
-				var myChart = echarts.init(this.$refs.scEcharts, 'T');
+				var myChart = markRaw(echarts.init(this.$refs.scEcharts, 'T'));
 				myChart.setOption(this.myOptions);
 				this.myChart = myChart;
 				window.addEventListener('resize', () => myChart.resize());

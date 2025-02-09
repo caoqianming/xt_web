@@ -12,11 +12,6 @@ import { beforeEach, afterEach } from './scrollBehavior';
 const routes = systemRouter
 
 //系统特殊路由
-const routes_404 = {
-	path: "/:pathMatch(.*)*",
-	hidden: true,
-	component: () => import(/* webpackChunkName: "404" */ '@/layout/other/404'),
-}
 let routes_404_r = () => { }
 
 const router = createRouter({
@@ -76,7 +71,6 @@ router.beforeEach(async (to, from, next) => {
 		menuRouter.forEach(item => {
 			router.addRoute("layout", item)
 		});
-		routes_404_r = router.addRoute(routes_404);
 		if (to.matched.length == 0) {
 			router.push(to.fullPath);
 		}

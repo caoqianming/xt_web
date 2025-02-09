@@ -4,30 +4,23 @@ import http from "@/utils/request"
 export default {
 	logs: {
 		list: {
-			url: `${config.API_URL}/monitor/request_log/`,
+			url: `${config.API_URL}/ops/request_log/`,
 			name: "请求日志",
 			req: async function(data){
 				return await http.get(this.url, data);
 			}
 		},
-		audit: {
-			url: `${config.API_URL}/monitor/auditlog/`,
-			name: "审计日志",
-			req: async function(data){
-				return await http.get(this.url, data);
-			}
-		}
 	},
 	dbbackup: {
 		list: {
-			url: `${config.API_URL}/monitor/dbbackup/`,
+			url: `${config.API_URL}/ops/dbbackup/`,
 			name: "数据库备份",
 			req: async function(data){
 				return await http.get(this.url, data);
 			}
 		},
 		deletes: {
-			url: `${config.API_URL}/monitor/dbbackup/`,
+			url: `${config.API_URL}/ops/dbbackup/`,
 			name: "数据库备份",
 			req: async function(data){
 				return await http.delete(this.url, data);
@@ -36,7 +29,7 @@ export default {
 	},
 	file_logs: {
 		list: {
-			url: `${config.API_URL}/monitor/log/`,
+			url: `${config.API_URL}/ops/log/`,
 			name: "文件日志",
 			req: async function(data){
 				return await http.get(this.url, data);
@@ -45,15 +38,27 @@ export default {
 		detail: {
 			name: "文件日志",
 			req: async function(name){
-				return await http.get(`${config.API_URL}/monitor/log/${name}/`);
+				return await http.get(`${config.API_URL}/ops/log/${name}/`);
 			}
 		}
 	},
 	server: {
-		info: {
-			name: "服务器状态",
+		cpu: {
+			name: "cpu状态",
 			req: async function(name){
-				return await http.get(`${config.API_URL}/monitor/server/`);
+				return await http.get(`${config.API_URL}/ops/server/cpu/`);
+			}
+		},
+		memory: {
+			name: "memory状态",
+			req: async function(name){
+				return await http.get(`${config.API_URL}/ops/server/memory/`);
+			}
+		},
+		disk: {
+			name: "disk状态",
+			req: async function(name){
+				return await http.get(`${config.API_URL}/ops/server/disk/`);
 			}
 		}
 	},
@@ -61,7 +66,7 @@ export default {
 		info: {
 			name: "celery状态",
 			req: async function(name){
-				return await http.get(`${config.API_URL}/monitor/celery/`);
+				return await http.get(`${config.API_URL}/ops/celery/`);
 			}
 		}
 	},
@@ -69,7 +74,7 @@ export default {
 		info: {
 			name: "redis状态",
 			req: async function(name){
-				return await http.get(`${config.API_URL}/monitor/redis/`);
+				return await http.get(`${config.API_URL}/ops/redis/`);
 			}
 		}
 	},

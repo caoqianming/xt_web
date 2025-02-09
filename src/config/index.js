@@ -33,6 +33,9 @@ const DEFAULT_CONFIG = {
 	//请求是否开启缓存
 	REQUEST_CACHE: false,
 
+	//静态菜单：static   |   动态菜单：dynamic
+	MENU_CATE:'dynamic',
+
 	//布局 默认：default | 通栏：header | 经典：menu | 功能坞：dock
 	//dock将关闭标签和面包屑栏
 	LAYOUT: 'header',

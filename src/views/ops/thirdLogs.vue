@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-      apiObj: this.$API.third.thirdLog,
+      apiObj: this.$API.ops.thirdLog,
       query: {},
       logLists: [],
       infoDrawer: false,
