@@ -24,7 +24,7 @@
 					</el-tree>
 				</el-main>
 				<el-footer style="height:51px;">
-					<el-button type="primary" size="mini" icon="el-icon-plus" style="width: 100%;" @click="addDicType" v-auth="'dict.create'">字典分类</el-button>
+					<el-button type="primary" size="small" icon="el-icon-plus" style="width: 100%;" @click="addDicType" v-auth="'dict.create'">字典分类</el-button>
 				</el-footer>
 			</el-container>
 		</el-aside>
@@ -36,7 +36,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable ref="table" :apiObj="listApi" row-key="id" :params="listApiParams" @selection-change="selectionChange" stripe :paginationLayout="'prev, pager, next'">
+				<scTable ref="table" :apiObj="listApi" row-key="id" :params="listApiParams" stripe :paginationLayout="'prev, pager, next'">
 					<!-- <el-table-column type="selection" width="50"></el-table-column> -->
 					<el-table-column label="序号" type="index" width="50"></el-table-column>
 					<el-table-column label="名称" prop="name" width="360"></el-table-column>

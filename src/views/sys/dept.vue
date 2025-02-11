@@ -60,6 +60,7 @@
             >
             <el-popconfirm
               title="确定删除吗？"
+              v-if="!scope.row.children"
               @confirm="delDept(scope.row, scope.$index)"
             >
               <template #reference>
@@ -68,7 +69,6 @@
                   type="danger"
                   size="small"
                   v-auth="'dept.delete'"
-                  v-if="!scope.row.children"
                   >删除</el-button
                 >
               </template>

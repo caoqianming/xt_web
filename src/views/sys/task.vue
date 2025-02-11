@@ -16,22 +16,22 @@
 					</ul>
 					<div class="bottom">
 						<div class="state">
-							<el-tag v-if="item.enabled" size="mini">启用</el-tag>
-							<el-tag v-if="!item.enabled" size="mini" type="danger">停用</el-tag>
+							<el-tag v-if="item.enabled" size="small">启用</el-tag>
+							<el-tag v-if="!item.enabled" size="small" type="danger">停用</el-tag>
 						</div>
 						<div class="handler">
 							<el-popconfirm title="确定立即执行吗？" @confirm="run(item)">
 								<template #reference>
-									<el-button type="primary" icon="el-icon-caret-right" size="mini" circle></el-button>
+									<el-button type="primary" icon="el-icon-caret-right" size="small" circle></el-button>
 								</template>
 							</el-popconfirm>
 							<el-dropdown trigger="click">
-								<el-button type="primary" icon="el-icon-more" size="mini" circle plain></el-button>
+								<el-button type="primary" icon="el-icon-more" size="small" circle plain></el-button>
 								<template #dropdown>
 									<el-dropdown-menu>
-										<el-dropdown-item @click="editTask(item)" v-auth="'ptask.update'">编辑</el-dropdown-item>
+										<!-- <el-dropdown-item @click="editTask(item)" v-auth="'ptask.update'">编辑</el-dropdown-item> -->
 										<el-dropdown-item @click="logs(item)">日志</el-dropdown-item>
-										<el-dropdown-item @click="delTask(item)" divided v-auth="'ptask.delete'">删除</el-dropdown-item>
+										<!-- <el-dropdown-item @click="delTask(item)" divided v-auth="'ptask.delete'">删除</el-dropdown-item> -->
 									</el-dropdown-menu>
 								</template>
 							</el-dropdown>
@@ -40,7 +40,7 @@
 				</el-card>
 			</el-col>
 			<el-col :xl="6" :lg="6" :md="8" :sm="12" :xs="24">
-				<el-card class="task task-add" shadow="none" @click="addTask" v-auth="'ptask.create'">
+				<el-card class="task task-add" @click="addTask" v-auth="'ptask.create'">
 					<i class="el-icon-plus"></i>
 					<p>添加计划任务</p>
 				</el-card>
@@ -77,8 +77,8 @@
 		</template>
 	</el-dialog>
 
-	<el-drawer title="计划任务日志" v-model="logsVisible" :size="600" direction="rtl" destroy-on-close>
-		<logs></logs>
+	<el-drawer title="计划任务日志" v-model="logsVisible" :size="800" direction="rtl" destroy-on-close>
+		<logs :ptask="ptask"></logs>
 	</el-drawer>
 </template>
 
@@ -118,6 +118,7 @@
 				visible: false,
 				isSaving: false,
 				logsVisible: false,
+				ptask: ""
 			}
 		},
 		mounted() {
@@ -180,7 +181,8 @@
 					//取消
 				})
 			},
-			logs(){
+			logs(item){
+				this.ptask = item;
 				this.logsVisible = true
 			},
 			run(task){
