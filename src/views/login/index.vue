@@ -187,7 +187,7 @@ export default {
 }
 
 .login_adv {
-	width: 40%;
+	width: 50%;
 	background-color: #555;
 	background-size: cover;
 	background-position: center center;
