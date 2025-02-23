@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, defineEmits, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 const props = defineProps({
 	multiple: { type: Boolean, default: false },
