@@ -118,7 +118,7 @@ export default {
           if (base_dashboard == null || base_dashboard == undefined || base_dashboard == '') {
             base_dashboard = '/dashboard'
           }
-          if(this.$TOOL.data.get('BASE_INFO').base.base_menucate=='dynamic'){
+          if(this.$TOOL.data.get('BASE_INFO').base.base_menucate=='backend'){
             try{
               var res = await that.$API.system.user.routers.req({})
               this.$TOOL.data.set("MENU",res)
