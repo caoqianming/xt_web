@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-input ref="inputRef" v-model="selectLabel" :readonly="true" :placeholder="placeholder">
+		<el-input ref="inputRef" v-model="selectLabel" :readonly="true" :placeholder="placeholder" @click="showPopover = true">
 			<template #prefix v-if="edit">
 				<el-button
 					text
