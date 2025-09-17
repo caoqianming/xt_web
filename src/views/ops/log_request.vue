@@ -86,6 +86,11 @@
           </template>
         </el-table-column>
         <el-table-column
+          label="耗时(ms)"
+          prop="response_ms"
+          min-width="40"
+        ></el-table-column>
+        <el-table-column
           label="操作时间"
           prop="requested_at"
           min-width="100"
