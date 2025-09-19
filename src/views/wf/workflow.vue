@@ -30,18 +30,28 @@
     <el-main class="nopadding">
       <scTable ref="table" :apiObj="apiObj" row-key="id">
         <el-table-column label="#" type="index"></el-table-column>
-        <el-table-column label="ID" prop="id" min-width="150"></el-table-column>
+        <el-table-column label="ID" prop="id" width="160"></el-table-column>
         <el-table-column
           label="工作流名称"
           prop="name"
-          min-width="200"
+          width="220"
         ></el-table-column>
         <el-table-column
           label="标识"
           prop="key"
-          min-width="100"
+          width="160"
         ></el-table-column>
         <el-table-column
+          label="流水前缀"
+          prop="sn_prefix"
+          width="80">
+        </el-table-column>
+        <el-table-column
+          label="页面路径"
+          prop="view_path"
+          min-width="150">
+        </el-table-column>
+        <!-- <el-table-column
           label="工单查看权限校验"
           prop="view_permission_check"
           min-width="120"
@@ -50,7 +60,7 @@
             <span v-if="scope.row.view_permission_check">是</span>
             <span v-else>否</span>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           label="工作流描述"
           prop="description"
@@ -59,7 +69,7 @@
         <el-table-column
           label="创建时间"
           prop="create_time"
-          min-width="150"
+          width="140"
         ></el-table-column>
         <el-table-column label="操作" fixed="right" align="center" width="250">
           <template #default="scope">
@@ -159,6 +169,9 @@
           :titles="['未展示字段', '展示字段']"
           :props="{ key: 'id', label: 'field_name' }"
         />
+      </el-form-item>
+      <el-form-item label="页面地址">
+        <el-input v-model="addForm.view_path" clearable></el-input>
       </el-form-item>
       <el-form-item label="标题模板">
         <el-input v-model="addForm.title_template" clearable></el-input>

@@ -1,4 +1,47 @@
 <template>
+	    <el-header>
+        <div class="left-panel">
+          <el-select
+            v-model="query.workflow"
+            placeholder="审批流"
+            @change="handleQuery"
+            clearable
+            style="margin-left: 2px"
+          >
+            <el-option
+              v-for="item in wfOptions"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+          <el-select
+            v-model="query.script_run_last_result"
+            placeholder="任务执行状态"
+            @change="handleQuery"
+            clearable
+            style="margin-left: 2px"
+          >
+            <el-option
+              v-for="item in rsOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <el-date-picker
+            v-model="timeRange"
+            type="datetimerange"
+            range-separator="至"
+            start-placeholder="创建时间始"
+            end-placeholder="创建时间止"
+            style="margin-left: 2px"
+            value-format="YYYY-MM-DD HH:mm:ss"
+            @change="handleQuery"
+            clearable
+          />
+        </div>
+    </el-header>
 	<el-container>
 		<el-main class="nopadding">
 			<scTable
@@ -143,10 +186,34 @@ export default {
 			floeLogs: [],
 			ticketId: "",
 			limitedFlowLogs: false,
+			wfOptions: [],
+			rsOptions: [
+						{ value: true, label: "成功" },
+						{ value: false, label: "失败" },
+					],
+			query: {},
+			timeRange: [],
 		};
 	},
-	mounted() {},
+	mounted() {
+		this.getWfOptions();
+	},
 	methods: {
+		getWfOptions() {
+			this.$API.wf.workflow.list.req({ page: 0 }).then((res) => {
+				this.wfOptions = res;
+			});
+		},
+		handleQuery() {
+				if (this.timeRange) {
+					this.query.start_create = this.timeRange[0];
+					this.query.end_create = this.timeRange[1];
+				} else {
+					this.query.end_create = null;
+					this.query.start_create = null;
+				}
+				this.$refs.table.queryData(this.query);
+		},
 		//处理
 		handleDetail(row) {
 		},
