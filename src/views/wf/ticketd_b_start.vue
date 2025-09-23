@@ -27,11 +27,11 @@ const props = defineProps({
 const workflow = ref(null);
 const transitions = ref([]);
 onMounted(async () => {
-    if (props.ticketId) {
+    if (props.ticketId != null && props.ticketId != undefined) {
         API.wf.ticket.ticketTransitions.req(props.ticketId).then(res => {
             transitions.value = res;
         });
-    }else if (props.workflow_key) {
+    }else if (props.workflow_key !=null && props.workflow_key != undefined) {
         let res = await API.wf.workflow.initkey.req(props.workflow_key);
         transitions.value = res.transitions;
         workflow.value = res.workflow
@@ -49,7 +49,7 @@ const submit = async (transition_id) => {
         if (props.submit_b_func) {
             await props.submit_b_func();
         }
-    if (props.ticketId != null) {
+    if (props.ticketId != null && props.ticketId != undefined) {
         let params = new Object();
         params.transition = transition_id;
         if (props.ticket_data) {
