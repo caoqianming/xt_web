@@ -67,3 +67,26 @@ export const schedulePeriodEnum = new EnumFactory({
   'hours': '小时',
   'days': '天',
 })
+
+export const actStateEnum = new EnumFactory({
+  0: { text: '草稿中', type: 'primary' },
+  1: { text: '进行中', type: 'primary' },
+  2: { text: '被退回', type: 'danger' },
+  3: { text: '被撤回', type: 'warning' },
+  4: { text: '已完成', type: 'success' },
+  5: { text: '已关闭', type: 'info' },
+})
+
+export const interveneTypeEnum = new EnumFactory({
+    0: { text: '正常', type: 'primary' },
+    1: { text: '转交', type: 'primary' },
+    2: { text: '加签', type: 'info' },
+    3: { text: '加签处理完成', type: 'primary' },
+    4: { text: '接单', type: 'success' },
+    5: { text: '评论', type: 'info' },
+    6: { text: '删除', type: 'danger' },
+    7: { text: '强制关闭', type: 'danger' },
+    8: { text: '强制修改状态', type: 'danger' },
+    10: { text: '撤回', type: 'danger' },
+    11: { text: '抄送', type: 'info' },
+})

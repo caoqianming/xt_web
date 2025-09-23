@@ -72,43 +72,28 @@
 				<el-table-column
 					label="工单标题"
 					prop="title"
-					width="180"
+					min-width="180"
 					:show-overflow-tooltip="true"
 				></el-table-column>
 
-				<el-table-column label="工作流" prop="title">
+				<el-table-column label="工作流" prop="title" width="160">
 					<template #default="scope">
 						{{ scope.row.workflow_.name }}
 					</template>
 				</el-table-column>
-				<el-table-column label="所在节点">
+				<el-table-column label="所在节点" width="160">
 					<template #default="scope">
 						{{ scope.row.state_.name }}
 					</template>
 				</el-table-column>
-				<el-table-column label="进行状态" prop="sort">
+				<el-table-column label="进行状态" prop="sort" width="120">
 					<template #default="scope">
-						<el-tag
-							:type="
-								scope.row.act_state === 0
-									? ''
-									: scope.row.act_state === 1
-									? ''
-									: scope.row.act_state === 2
-									? 'danger'
-									: scope.row.act_state === 3
-									? 'danger'
-									: scope.row.act_state === 5
-									? 'danger'
-									: scope.row.act_state === 4
-									? 'success'
-									: ''
-							"
-							>{{ act_states[scope.row.act_state] }}</el-tag
-						>
+						<el-tag :type="actStateEnum[scope.row.act_state]?.type">
+                        {{ actStateEnum[scope.row.act_state]?.text }}
+                    </el-tag>
 					</template>
 				</el-table-column>
-				<el-table-column label="可处理人" :show-overflow-tooltip="true">
+				<el-table-column label="可处理人" :show-overflow-tooltip="true" min-width="160">
 					<template #default="scope">
 						<span
 							v-if="
@@ -134,7 +119,6 @@
 					<template #default="scope">
 						<el-button
 							type="danger"
-							link
 							size="small"
 							@click="reStart(scope.row)"
 							v-if="scope.row.script_run_last_result == false"
@@ -144,18 +128,24 @@
 				</el-table-column>
 			</scTable>
 		</el-main>
-		<el-drawer title="工单详情" v-model="drawer" size="80%" destroy-on-close>
-			<component :is="currentComponent" :ticketId="ticketId"></component>
+		<el-drawer v-model="drawer" size="90%" :show-close="false">
+			<template #header="{ close, titleId, titleClass }">
+				<h4 :id="titleId" :class="titleClass">工单详情</h4>
+				<el-button type="danger" @click="close">关闭</el-button>
+			</template>
+			<component :is="currentComponent" :ticketId="ticketId" :modelId="modelId"></component>
 		</el-drawer>
 	</el-container>
 </template>
 
 <script>
-import { defineAsyncComponent } from 'vue'; // 异步组件加载
+import { defineAsyncComponent, markRaw } from 'vue'; // 异步组件加载
+import { actStateEnum, interveneTypeEnum } from "@/utils/enum.js";
 export default {
 	name: "myticket",
 	data() {
 		return {
+			actStateEnum, interveneTypeEnum,
 			drawer: false,
 			tvalue: "待办",
 			toptions: {
@@ -189,6 +179,7 @@ export default {
 			wfOptions: [],
 			currentComponent: null,
 			ticketId: null,
+			modelId: null,
 		};
 	},
 	mounted() {
@@ -213,7 +204,7 @@ export default {
 		reStart(row) {
 			this.$API.wf.ticket.retryScript.req(row.id).then((res) => {
 				this.$message.success("任务执行下发成功");
-				// this.$refs.table.refresh();
+				row.script_run_last_result = true;
 			});
 		},
 		handleQuery() {
@@ -229,11 +220,12 @@ export default {
 		handleShow(row) {
 			this.drawer = true;
 			this.ticketId = row.id;
+			this.modelId = row.ticket_data.t_id;
 			const viewPath = row.workflow_.view_path;
 			// 动态 import
-			this.currentComponent = defineAsyncComponent(() =>
-				import(`@/views${viewPath}.vue`)
-			)
+			this.currentComponent = markRaw(
+			defineAsyncComponent(() => import(`@/views${viewPath}.vue`))
+			);
 		},
 	},
 };
