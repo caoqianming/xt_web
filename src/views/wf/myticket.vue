@@ -133,7 +133,8 @@
 				<h4 :id="titleId" :class="titleClass">工单详情</h4>
 				<el-button type="danger" @click="close">关闭</el-button>
 			</template>
-			<component :is="currentComponent" :ticketId="ticketId" :modelId="modelId"></component>
+			<component :is="currentComponent" :ticketId="ticketId" :t_id="t_id" @closed="drawer = false"
+			@success="()=>{drawer = false; $refs.table.refresh()}"></component>
 		</el-drawer>
 	</el-container>
 </template>
@@ -179,7 +180,7 @@ export default {
 			wfOptions: [],
 			currentComponent: null,
 			ticketId: null,
-			modelId: null,
+			t_id: null,
 		};
 	},
 	mounted() {
@@ -220,7 +221,7 @@ export default {
 		handleShow(row) {
 			this.drawer = true;
 			this.ticketId = row.id;
-			this.modelId = row.ticket_data.t_id;
+			this.t_id = row.ticket_data.t_id;
 			const viewPath = row.workflow_.view_path;
 			// 动态 import
 			this.currentComponent = markRaw(

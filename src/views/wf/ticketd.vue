@@ -1,5 +1,5 @@
 <template>
-    <el-collapse v-model="activeNames">
+    <el-collapse v-model="activeNames" style="padding-left: 2px; padding-right: 2px;">
         <el-collapse-item title="基本信息" name="1">
             <el-descriptions :column="1">
                 <el-descriptions-item>
@@ -11,6 +11,10 @@
                     <el-tag :type="actStateEnum[ticketDetail.act_state]?.type" effect="plain">
                         {{ actStateEnum[ticketDetail.act_state]?.text }}
                     </el-tag>
+                </el-descriptions-item>
+                <el-descriptions-item label="可处理人:"
+                    v-if="ticketDetail.participant_type == 2 || ticketDetail.participant_type == 1">
+                    <span v-for="item in ticketDetail.participant_" :key="item.id">{{ item.name }}/</span>
                 </el-descriptions-item>
             </el-descriptions>
         </el-collapse-item>
@@ -85,12 +89,13 @@ const handleForm = ref({
     suggestion: ""
 })
 onMounted(() => {
-    console.log('props.ticketId', props.ticketId)
+    console.log(props)
     if (props.ticketId) {
         getTicketDetail();
         getTicketLog();
     }
 });
+const emit = defineEmits(['success']);
 const refreshTicket = async () => {
     actionShow.value = false
     isOwn.value = false
@@ -100,6 +105,7 @@ const refreshTicket = async () => {
     activeNames.value = ['1', '3'] // 根据需要恢复初始展开项
     getTicketDetail()
     getTicketLog()
+    emit('success')
 }
 
 const getTicketDetail = () => {
@@ -162,7 +168,7 @@ const handleTransition = (transitionId) => {
     params.transition = transitionId;
     if (props.ticket_data) {
         params.ticket_data = props.ticket_data;
-    }else{
+    } else {
         params.ticket_data = {};
     }
     params.suggestion = handleForm.value.suggestion;

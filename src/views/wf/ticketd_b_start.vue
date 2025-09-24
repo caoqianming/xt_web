@@ -27,9 +27,13 @@ const props = defineProps({
 const workflow = ref(null);
 const transitions = ref([]);
 onMounted(async () => {
+    init()
+})
+const init = async () => {
     if (props.ticketId != null && props.ticketId != undefined) {
         API.wf.ticket.ticketTransitions.req(props.ticketId).then(res => {
             transitions.value = res;
+            console.log("res", res)
         });
     }else if (props.workflow_key !=null && props.workflow_key != undefined) {
         let res = await API.wf.workflow.initkey.req(props.workflow_key);
@@ -38,8 +42,7 @@ onMounted(async () => {
     }else{
         ElMessage.error("缺少workflow_key或ticketId");
     }
-    
-})
+}
 
 const isSaveing = ref(false);
 
