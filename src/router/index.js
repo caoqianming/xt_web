@@ -67,7 +67,7 @@ router.beforeEach(async (to, from, next) => {
 	//加载动态/静态路由
 	if (!isGetRouter) {
 		let userMenu = [];
-		if(tool.data.get('BASE_INFO').base.base_menucate=='dynamic'){
+		if(tool.data.get('BASE_INFO').base.base_menucate=='backend'){
 			userMenu = tool.data.get("MENU") || [];	
 		}else{
 			let permissions = tool.data.get("PERMISSIONS") || [];//账号页面权限
@@ -114,7 +114,7 @@ router.onError((error) => {
 
 //入侵追加自定义方法、对象
 router.sc_getMenu = () => {
-	if(tool.data.get('BASE_INFO').base.base_menucate=='dynamic'){
+	if(tool.data.get('BASE_INFO').base.base_menucate=='backend'){
 		return tool.data.get("MENU") || []
 	}
 	else{
