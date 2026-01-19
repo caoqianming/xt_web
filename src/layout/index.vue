@@ -370,7 +370,6 @@ export default {
 		},
 	},
 	created() {
-		document.title = this.$store.state.global.baseName;
 		this.onLayoutResize();
 		window.addEventListener("resize", this.onLayoutResize);
 		var menu = this.$router.sc_getMenu();
